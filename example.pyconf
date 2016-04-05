@@ -1,0 +1,17 @@
+"""
+An example configuration
+
+`python conf.py example.pyconf` generates JSON representation of CONFIG
+"""
+
+# service = {'name': 'example', 'flags': {'logtostderr': True}}
+service = conf(
+  name = 'example'
+  flags = conf(
+    'logtostderr' = True,
+  ),
+)
+
+
+
+
