@@ -6,11 +6,13 @@ An example configuration
 
 # service = {'name': 'example', 'flags': {'logtostderr': True}}
 service = conf(
-  name = 'example'
+  name = 'example',
   flags = conf(
-    'logtostderr' = True,
+    logtostderr = True,
   ),
 )
+
+CONFIG = service
 
 
 
