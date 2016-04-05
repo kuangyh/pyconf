@@ -4,16 +4,25 @@ An example configuration
 `python conf.py example.pyconf` generates JSON representation of CONFIG
 """
 
-# service = {'name': 'example', 'flags': {'logtostderr': True}}
-service = conf(
-  name = 'example',
-  flags = conf(
-    logtostderr = True,
-  ),
+target = conf(
+  name = None,
+  compile = {},
+  deps = [],
 )
 
-CONFIG = service
+cc_compiler = conf(
+  cmd = 'g++',
+  flags = ['-Wall', 'W'],
+)
 
+cc_binary = target(
+  compile = cc_compiler,
+  deps = target.deps + ['stdc++'],
+)
 
-
-
+CONFIG = cc_binary(
+  name = 'example',
+  compile = cc_binary.compile(
+    flags = cc_binary.compile.flags + ['-lpthread'],
+  ),
+)
