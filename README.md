@@ -86,4 +86,6 @@ ordered tupple introduced above uses this technique:
 
 # API
 
-See code
+See code.
+
+You can tailor Python runtime to build a secure restricted environment for just the configuration stuff. Do note that there's no such thing as secured sandbox in Python, use a container solution instead.
