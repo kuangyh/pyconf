@@ -79,6 +79,14 @@ class Node(object):
       raise TypeError('Cannot extend node with non-dict data %s' % (type(right),))
     return self(**right)
 
+  def __rlshift__(self, left):
+    right = self._value
+    if right is None:
+      right = {}
+    if not isinstance(right, dict):
+      raise TypeError('Cannot extend node with non-dict data %s' % (type(right),))
+    return left(**right)
+
 conf = Node(None)
 
 def array(*args):
@@ -87,6 +95,7 @@ def array(*args):
 def run(path, builtins=None):
   import imp
   import runpy
+  import os.path
   conf_builtins = {
     'conf': conf,
     'array': array,
@@ -94,7 +103,10 @@ def run(path, builtins=None):
   if builtins is not None:
     conf_builtins.update(builtins)
 
-  def conf_load(path):
+  def conf_load(dirty_path):
+    path = os.path.normpath(dirty_path)
+    if path.startswith('.') or path.startswith('/'):
+      raise ValueError('Invalid conf_load path %s' % (dirty_path,))
     result_dict = runpy.run_path(path, init_globals=conf_builtins)
     mod = imp.new_module(path)
     for k, v in result_dict.iteritems():
@@ -116,4 +128,3 @@ if __name__ == '__main__':
   import sys
   ret = run(sys.argv[1])['CONFIG']
   print json.dumps(ret)
-
